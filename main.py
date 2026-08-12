@@ -136,7 +136,7 @@ default_config = {
 }
 
 default_trackers = {
-    "Google": ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "utm_id", "gclid", "gclsrc", "dclid", "wbraid", "gbraid", "gad_source"],
+    "Google": ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "utm_id", "gclid", "gclsrc", "dclid", "wbraid", "gbraid", "gad_source","si"],
     "Meta": ["fbclid", "fb_action_ids", "fb_action_types", "fb_source", "fb_ref", "fb_ad_id", "fb_adset_id", "fb_campaign_id", "igsh"],
     "TikTok": ["ttclid", "tt_content_id", "tt_medium", "tt_campaign_id", "tt_ad_id", "tt_adset_id"],
     "Microsoft": ["msclkid", "li_fat_id", "li_source", "li_medium", "li_campaign"],
