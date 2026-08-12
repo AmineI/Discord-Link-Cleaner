@@ -1,0 +1,13 @@
+.git
+.gitignore
+.vscode
+.env
+__pycache__
+*.py[cod]
+*.log
+config.json
+config.json.backup_*
+trackers.json
+venv
+env
+data

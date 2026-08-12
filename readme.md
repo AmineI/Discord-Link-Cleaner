@@ -56,6 +56,24 @@ Before you begin, you'll need:
 - An Ubuntu server (or any Linux system with Python 3.7+)
 - Basic knowledge of Linux command line
 
+## Running with Docker
+
+Docker Compose builds the bot and stores `config.json` and `trackers.json` in a persistent named volume.
+
+1. Create a `.env` file containing your Discord bot token:
+
+```env
+DISCORD_BOT_TOKEN=YOUR_DISCORD_BOT_TOKEN_HERE
+```
+
+2. Build and start the bot:
+
+```bash
+docker compose up --build
+```
+
+Stop the bot with `docker compose down`. Its configuration remains in the `bot-data` volume; use `docker compose down -v` only when you also want to delete that data.
+
 ## Creating a Discord Bot
 
 ### Step 1: Create a Discord Application
