@@ -125,8 +125,10 @@ def ensure_json_valid(filepath: str, default_content: dict) -> None:
         print(f"Error validating JSON file {filepath}: {e}")
 
 APP_FOLDER = get_app_folder()
-CONFIG_PATH = os.path.join(APP_FOLDER, 'config.json')
-TRACKERS_PATH = os.path.join(APP_FOLDER, 'trackers.json')
+DATA_FOLDER = os.environ.get('DATA_DIR', APP_FOLDER)
+os.makedirs(DATA_FOLDER, exist_ok=True)
+CONFIG_PATH = os.path.join(DATA_FOLDER, 'config.json')
+TRACKERS_PATH = os.path.join(DATA_FOLDER, 'trackers.json')
 
 default_config = {
     "bot_token": "",
@@ -167,7 +169,7 @@ with open(CONFIG_PATH, 'r', encoding="utf-8") as f:
 with open(TRACKERS_PATH, 'r', encoding="utf-8") as f:
     trackers = json.load(f)
 
-bot_token = config.get("bot_token", default_config["bot_token"])
+bot_token = os.environ.get("DISCORD_BOT_TOKEN", config.get("bot_token", default_config["bot_token"]))
 mention_reply_author = config.get("mention_reply_author", default_config["mention_reply_author"])
 require_links = config.get("require_links", default_config["require_links"])
 

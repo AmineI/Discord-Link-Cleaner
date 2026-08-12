@@ -1,6 +1,7 @@
 # Local configuration file (contains sensitive tokens and API keys)
 config.json
 config.json.backup_*
+.env
 
 trackers.json
 
