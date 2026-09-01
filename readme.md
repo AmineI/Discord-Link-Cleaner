@@ -19,7 +19,7 @@ A Discord bot that automatically removes tracking parameters from URLs in messag
 - Removes tracking parameters using url-sanitize
 - Deletes original message and reposts with cleaned URLs
 - Supports custom URL detection via regex
-- Optional author mention when reposting
+- Mentions the original author when reposting
 
 ## Prerequisites
 
@@ -35,7 +35,7 @@ Docker Compose handles everything automatically:
 
 1. Create `.env` file:
 ```env
-DISCORD_BOT_TOKEN=YOUR_TOKEN_HERE
+BOT_TOKEN=YOUR_TOKEN_HERE
 ```
 
 2. Run:
@@ -86,8 +86,9 @@ First run creates `config.json`. Edit it with your bot token:
 ```json
 {
     "bot_token": "YOUR_DISCORD_BOT_TOKEN_HERE",
-    "mention_reply_author": true,
-    "regex_keys": "(?i)\\b((?:https?://|www\\.)[^\\s<>\"']+|(?:[a-z0-9-]+\\.)+[a-z]{2,}(?:/[^\\s<>\"']*)?)\\b"
+    "regex_keys": "(?i)\\b((?:https?://|www\\.)[^\\s<>\"']+|(?:[a-z0-9-]+\\.)+[a-z]{2,}(?:/[^\\s<>\"']*)?)\\b",
+    "extra_tracking_params": ["igsi"],
+    "repost_message": "Your message has been reposted with cleaned URLs (trackers removed):\n>>> {message}"
 }
 ```
 
@@ -106,15 +107,14 @@ The bot automatically:
 
 ## Configuration
 
-Edit `config.json` (auto-created on first run):
+Every setting lives in `config.json` (auto-created on first run). Set an environment variable with the uppercase setting name to override it; for example, `extra_tracking_params` becomes `EXTRA_TRACKING_PARAMS`. Environment variables take precedence over `config.json`, which takes precedence over the built-in default.
 
-**`bot_token`** - Your Discord bot token (required)
-
-**`mention_reply_author`** (boolean, default: `true`) - Whether to mention the original author when reposting
-
-**`regex_keys`** (string) - URL detection regex pattern (defaults provided)
-
-**`BOT_REPOST_MESSAGE`** (environment variable) - Overrides the built-in reply text with a custom template.
+| Setting | Type | Default | Description |
+|---|---|---|---|
+| `bot_token` | string | *(required)* | Your Discord bot token |
+| `regex_keys` | string | *(URL pattern)* | URL detection regex pattern. Leave as is in most cases. |
+| `extra_tracking_params` | comma-separated list | `igsi` | Query parameters stripped from cleaned URLs on any domain, in addition to what url-sanitize already removes, for trackers it doesn't yet support (e.g. Instagram's `igsi` as of Aug 2026) |
+| `repost_message` | string | *(built-in template)* | Reply text template to bypass the default english message |
 
 ## Troubleshooting
 

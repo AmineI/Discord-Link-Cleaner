@@ -6,8 +6,11 @@ services:
       - .env
     environment:
       DATA_DIR: /data
-      DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN:?Set DISCORD_BOT_TOKEN in .env}
-      BOT_REPOST_MESSAGE: ${BOT_REPOST_MESSAGE:-}
+      BOT_TOKEN: ${BOT_TOKEN:?Set BOT_TOKEN in .env}
+#url matching regex is already provided, leave as is
+#      REGEX_KEYS: ${REGEX_KEYS:-}
+      EXTRA_TRACKING_PARAMS: ${EXTRA_TRACKING_PARAMS:-}
+      REPOST_MESSAGE: ${REPOST_MESSAGE:-}
     volumes:
       - bot-data:/data
 
