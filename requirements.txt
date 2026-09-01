@@ -1,2 +1,2 @@
-discord.py
+git+https://github.com/Rapptz/discord.py.git@65232c38702be5844cf2ce865a4777eb1928b5d0
 url-sanitize
