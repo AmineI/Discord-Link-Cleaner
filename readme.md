@@ -114,6 +114,8 @@ Edit `config.json` (auto-created on first run):
 
 **`regex_keys`** (string) - URL detection regex pattern (defaults provided)
 
+**`BOT_REPOST_MESSAGE`** (environment variable) - Overrides the built-in reply text with a custom template.
+
 ## Troubleshooting
 
 **Bot doesn't respond to messages:**

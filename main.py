@@ -10,7 +10,12 @@ from url_sanitize import sanitize
 # Configuration
 DATA_FOLDER = os.environ.get('DATA_DIR', os.path.dirname(__file__))
 CONFIG_PATH = os.path.join(DATA_FOLDER, 'config.json')
+DEFAULT_REPOST_MESSAGE = "Your message has been reposted with cleaned URLs (trackers removed):\n>>> {message}"
 
+# Optional override for the repost message
+CUSTOM_REPOST_MESSAGE = os.environ.get("BOT_REPOST_MESSAGE", "").strip()
+if CUSTOM_REPOST_MESSAGE and "{message}" not in CUSTOM_REPOST_MESSAGE:
+    CUSTOM_REPOST_MESSAGE += "\n>>> {message}"
 # Default config
 DEFAULT_CONFIG = {
     "bot_token": "",
@@ -86,7 +91,9 @@ async def on_message(message):
             sanitized_message = sanitized_message.replace(original, cleaned)
 
         author_mention = f"{message.author.mention} " if mention_reply_author else ""
-        await reply.edit(content=f"{author_mention}Your message has been reposted with cleaned URLs (trackers removed):\n{sanitized_message}")
+        template = CUSTOM_REPOST_MESSAGE or DEFAULT_REPOST_MESSAGE
+        repost_message = template.format(message=sanitized_message)
+        await reply.edit(content=f"{author_mention}{repost_message}")
         await message.delete()
     except discord.Forbidden:
         print("Bot lacks permission to delete messages.")

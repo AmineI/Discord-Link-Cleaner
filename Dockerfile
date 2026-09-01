@@ -23,6 +23,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 ENV URL_SANITIZE_BIN=/usr/local/bin/url-sanitize-native
 COPY --from=url-sanitize-installer /root/.local/bin/url-sanitize /usr/local/bin/url-sanitize-native
+# Test url-sanitize
 RUN python -c "from url_sanitize import sanitize; print(sanitize('https://example.com/?utm_source=test'))"
 
 COPY --chown=appuser:appuser main.py .
