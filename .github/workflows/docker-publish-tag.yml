@@ -3,7 +3,7 @@ name: Build and push tagged Docker image
 # Version tags always publish, without a file path filter.
 on:
   push:
-    tags: ['v*']
+    tags: ['*']
 
 jobs:
   publish:
