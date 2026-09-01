@@ -8,6 +8,9 @@ RUN apt-get update \
   && sh /tmp/url-sanitize-installer.sh
 
 FROM python:3.12-slim
+RUN apt-get update \
+  && apt-get install --yes --no-install-recommends git \
+  && rm -rf /var/lib/apt/lists/*
 
 # Create a non-root user and set permissions for the data directory
 RUN useradd --create-home --uid 10001 appuser \
