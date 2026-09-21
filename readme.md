@@ -86,7 +86,7 @@ First run creates `config.json`. Edit it with your bot token:
 ```json
 {
     "bot_token": "YOUR_DISCORD_BOT_TOKEN_HERE",
-    "regex_keys": "(?i)\\b((?:https?://|www\\.)[^\\s<>\"']+|(?:[a-z0-9-]+\\.)+[a-z]{2,}(?:/[^\\s<>\"']*)?)\\b",
+    "regex_keys": "(?i)\\b((?:https?://|www\\.)[^\\s<>\"']+|(?:[a-z0-9-]+\\.)+[a-z]{2,}(?:/[^\\s<>\"']*)?)(?:\\b|(?<=/))",
     "extra_tracking_params": ["igsi"],
     "repost_message": "Your message has been reposted with cleaned URLs (trackers removed):\n>>> {message}"
 }

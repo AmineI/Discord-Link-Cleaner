@@ -16,7 +16,7 @@ CONFIG_PATH = os.path.join(DATA_FOLDER, 'config.json')
 DEFAULT_CONFIG = {
     "bot_token": "",
     "repost_message": "Your message has been reposted with cleaned URLs (trackers removed):\n>>> {message}",
-    "regex_keys": "(?i)\\b((?:https?://|www\\.)[^\\s<>\"']+|(?:[a-z0-9-]+\\.)+[a-z]{2,}(?:/[^\\s<>\"']*)?)\\b",
+    "regex_keys": "(?i)\\b((?:https?://|www\\.)[^\\s<>\"']+|(?:[a-z0-9-]+\\.)+[a-z]{2,}(?:/[^\\s<>\"']*)?)(?:\\b|(?<=/))",
     # Additional query params to parse, not (yet) stripped by url-sanitize, e.g. Instagram's igsi
     "extra_tracking_params": ["igsi"]
 }
