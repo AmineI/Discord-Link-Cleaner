@@ -12,6 +12,12 @@ on:
 #    branches: [main]
   workflow_dispatch:
   workflow_call:
+    inputs:
+      dated-tag:
+        description: Add a UTC-dated variant of the ref tag
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   prune_untagged_images:
@@ -62,6 +68,7 @@ jobs:
             type=raw,value=latest,enable={{is_default_branch}}
             type=ref,event=branch
             type=ref,event=tag
+            type=raw,value=${{ github.ref_name }}_{{date 'YYYYMMDD' tz='UTC'}},enable=${{ inputs.dated-tag == true }}
 
       - name: Build and push
         uses: docker/build-push-action@v6

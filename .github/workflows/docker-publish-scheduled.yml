@@ -1,0 +1,14 @@
+name: Rebuild Docker image monthly
+
+on:
+  schedule:
+    - cron: '17 4 1 * *'
+
+jobs:
+  publish:
+    uses: ./.github/workflows/docker-publish.yml
+    permissions:
+      contents: read
+      packages: write
+    with:
+      dated-tag: true
