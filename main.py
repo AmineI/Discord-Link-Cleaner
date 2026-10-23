@@ -18,7 +18,8 @@ DEFAULT_CONFIG = {
     "repost_message": "Your message has been reposted with cleaned URLs (trackers removed):\n>>> {message}",
     "regex_keys": "(?i)\\b((?:https?://|www\\.)[^\\s<>\"']+|(?:[a-z0-9-]+\\.)+[a-z]{2,}(?:/[^\\s<>\"']*)?)(?:\\b|(?<=/))",
     # Additional query params to parse, not (yet) stripped by url-sanitize, e.g. Instagram's igsi
-    "extra_tracking_params": ["igsi"]
+    "extra_tracking_params": ["igsi"],
+    "strip_all_params_domains": ["instagram.com"]
 }
 
 # Load or create config
@@ -48,6 +49,13 @@ extra_tracking_params = get_setting("extra_tracking_params")
 if isinstance(extra_tracking_params, str):
     extra_tracking_params = [p.strip() for p in extra_tracking_params.split(",") if p.strip()]
 EXTRA_TRACKING_PARAMS = {p.lower() for p in extra_tracking_params}
+strip_all_params_domains = get_setting("strip_all_params_domains")
+if isinstance(strip_all_params_domains, str):
+    strip_all_params_domains = strip_all_params_domains.split(",")
+STRIP_ALL_PARAMS_DOMAINS = {
+    domain.strip().lower().rstrip(".")
+    for domain in strip_all_params_domains if domain.strip()
+}
 REPOST_MESSAGE = get_setting("repost_message")
 if "{message}" not in REPOST_MESSAGE:
     REPOST_MESSAGE += "\n>>> {message}"
@@ -62,11 +70,14 @@ except RuntimeError as e:
     raise
 
 def strip_extra_params(url):
-    """Remove tracking params not handled by url-sanitize."""
-    if not EXTRA_TRACKING_PARAMS:
-        return url
+    """Apply overrides : remove specific parameters + remove all parameters from specific domains."""
     parts = urlsplit(url)
     if not parts.query:
+        return url
+    hostname = (parts.hostname or urlsplit("//" + url).hostname or "").lower().rstrip(".")
+    if any(hostname == domain or hostname.endswith("." + domain) for domain in STRIP_ALL_PARAMS_DOMAINS):
+        return urlunsplit(parts._replace(query=""))
+    if not EXTRA_TRACKING_PARAMS:
         return url
     kept = [(k, v) for k, v in parse_qsl(parts.query, keep_blank_values=True) if k.lower() not in EXTRA_TRACKING_PARAMS]
     return urlunsplit(parts._replace(query=urlencode(kept)))

@@ -17,6 +17,7 @@ A Discord bot that automatically removes tracking parameters from URLs in messag
 
 - Automatically detects URLs in Discord messages
 - Removes tracking parameters using url-sanitize
+- Supports domain overrides to remove all query parameters (Instagram by default - since their tracking parameters are renamed quite frequently.)
 - Deletes original message and reposts with cleaned URLs
 - Supports custom URL detection via regex
 - Mentions the original author when reposting
@@ -88,6 +89,7 @@ First run creates `config.json`. Edit it with your bot token:
     "bot_token": "YOUR_DISCORD_BOT_TOKEN_HERE",
     "regex_keys": "(?i)\\b((?:https?://|www\\.)[^\\s<>\"']+|(?:[a-z0-9-]+\\.)+[a-z]{2,}(?:/[^\\s<>\"']*)?)(?:\\b|(?<=/))",
     "extra_tracking_params": ["igsi"],
+    "strip_all_params_domains": ["instagram.com"],
     "repost_message": "Your message has been reposted with cleaned URLs (trackers removed):\n>>> {message}"
 }
 ```
@@ -114,7 +116,18 @@ Every setting lives in `config.json` (auto-created on first run). Set an environ
 | `bot_token` | string | *(required)* | Your Discord bot token |
 | `regex_keys` | string | *(URL pattern)* | URL detection regex pattern. Leave as is in most cases. |
 | `extra_tracking_params` | comma-separated list | `igsi` | Query parameters stripped from cleaned URLs on any domain, in addition to what url-sanitize already removes, for trackers it doesn't yet support (e.g. Instagram's `igsi` as of Aug 2026) |
+| `strip_all_params_domains` | JSON array / comma-separated env list | `instagram.com` | Domains whose entire query string is removed after url-sanitize runs. Also matches subdomains, case-insensitively. Paths and fragments are preserved. |
 | `repost_message` | string | *(built-in template)* | Reply text template to bypass the default english message |
+
+For example, `https://www.instagram.com/p/ABC/?img_index=2&igsh=xyz#comments`
+becomes `https://www.instagram.com/p/ABC/#comments`. Only list domains where
+removing all query parameters is acceptable; some parameters control page behavior.
+
+Use bare domain names (no scheme or path). Set `"strip_all_params_domains": []`
+in `config.json` to disable the overrides. Alternatively, set
+`STRIP_ALL_PARAMS_DOMAINS=instagram.com,example.com` in your environment (or Docker
+Compose `.env`) to override the list. An empty environment variable falls back to
+the JSON configuration, as with other settings.
 
 ## Troubleshooting
 

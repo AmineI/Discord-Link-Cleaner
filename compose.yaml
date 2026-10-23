@@ -10,6 +10,7 @@ services:
 #url matching regex is already provided, leave as is
 #      REGEX_KEYS: ${REGEX_KEYS:-}
       EXTRA_TRACKING_PARAMS: ${EXTRA_TRACKING_PARAMS:-}
+      STRIP_ALL_PARAMS_DOMAINS: ${STRIP_ALL_PARAMS_DOMAINS:-}
       REPOST_MESSAGE: ${REPOST_MESSAGE:-}
     volumes:
       - bot-data:/data
